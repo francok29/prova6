@@ -141,21 +141,6 @@ public class Percolation {
         }
 
     }
-        
-        public boolean dd(int row, int col)
-    {
-     
-        if(gridLength > 1) 
-        {
-
-            return percolation.connected(row, col);
-        }
-        else 
-        {
-            return isOpen[getSiteIndex(1,1)];
-        }
-
-    }
 
     public static void main(String[] args)
     {
@@ -165,19 +150,7 @@ public class Percolation {
         percolation2.open(1,1);
         StdOut.println(percolation2.percolate());
         percolation2.open(2,1);
-        
-        System.out.println("-----------percolates??---------------");
         StdOut.println(percolation2.percolate());
-        StdOut.println("percolation2 topIndex: " + percolation2.isOpen[0]);
-        
-        StdOut.println("percolation2 index[1]: " + percolation2.isOpen[1]);
-        StdOut.println("percolation2 index[2]: " + percolation2.isOpen[2]);
-        StdOut.println("percolation2 index[3]: " + percolation2.isOpen[3]);
-        StdOut.println("percolation2 index[4]: " + percolation2.isOpen[4]);
-        
-        StdOut.println("percolation2 bottomIndex: " + percolation2.isOpen[5]);
-        
-        StdOut.println("percolation2: " + percolation2.dd(3,5));
             
     }
 }
