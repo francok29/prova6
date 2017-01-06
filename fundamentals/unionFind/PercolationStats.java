@@ -7,7 +7,7 @@ public class PercolationStats {
     private double[] thresholdResults;
     private int trials;
 
-    public PercolationStats(int n, int trials) {
+    public PercolationStats(int gridLength, int trials) {
         
         this.trials = trials;
 
@@ -15,24 +15,33 @@ public class PercolationStats {
         // The perpose is to getting the percolation threshold. 
         // Create the grid.
 
-        Percolation percolation = new Percolation(n);
+        Percolation percolation = new Percolation(gridLength);
         thresholdResults = new double[trials];
 
-        int opnedSites = 0;
-        for (int i = 0; i < trials + 1; i++) {
-            while(!percolation.percolate()) {
 
-                int row = StdRandom.uniform(1, n+1);
-                int col = StdRandom.uniform(1, n+1);
+        for(int i = 0; i < trials; i++) {
+            thresholdResults[i] = test(gridLength);
+        } 
 
+    }
+
+    public double test(int gridLength) {
+        Percolation percolation = new Percolation(gridLength);
+        int openedSites = 0;
+
+        while(!percolation.percolate()) {
+            int row = StdRandom.uniform(1, gridLength+1);
+            int col = StdRandom.uniform(1, gridLength+1);
+
+            if (!percolation.isOpen(row,col)) {
                 percolation.open(row, col);
-                opnedSites++;
-            }   
-
-            double threshold = (double)opnedSites/(double)(n*n);
-            thresholdResults[i] = threshold;
-
+                openedSites++;
+                System.out.println("Opened site! " + openedSites);
+            }
         }
+        double threshold = (double)openedSites/(double)(gridLength*gridLength);
+        System.out.println("threshold " + threshold);
+        return threshold;
     }
     
     public double mean() {
@@ -61,12 +70,21 @@ public class PercolationStats {
 
     }
 
+    public void printThresholds(int trials) {
+        for (int i = 0; i < trials; i++  ) {
+            System.out.println(thresholdResults[i]);    
+        }
+        
+    }
+
     public static void main (String[] args) {
 
         int n = Integer.parseInt(args[0]);
         int trials = Integer.parseInt(args[1]);
 
         PercolationStats statistic = new PercolationStats(n, trials);
+
+        statistic.printThresholds(trials);        
 
         StdOut.println("mean                    = " + statistic.mean());
         StdOut.println("standard deviation      = " + statistic.stddev());
