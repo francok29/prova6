@@ -12,10 +12,14 @@ public class PercolationStats {
         It does multiple times of a percolation experiment.
         It does multiple times of a percolation experiment.
         */
+        if (trials < 1 || gridLength < 1) {
+            throw new IllegalArgumentException();
+        }
+
         this.trials = trials;
         thresholdResults = new double[trials];
 
-        for(int i = 0; i < trials; i++) {
+        for (int i = 0; i < trials; i++) {
             thresholdResults[i] = test(gridLength);
         } 
     }
@@ -31,16 +35,16 @@ public class PercolationStats {
         int openedSites = 0;
 
         // generate random row and col and open the site.
-        while(!percolation.percolates()) {
+        while (!percolation.percolates()) {
             int row = StdRandom.uniform(1, gridLength+1);
             int col = StdRandom.uniform(1, gridLength+1);
 
-            if (!percolation.isOpen(row,col)) {
+            if (!percolation.isOpen(row, col)) {
                 percolation.open(row, col);
                 openedSites++;
             }
         }
-        double threshold = (double)openedSites/(double)(gridLength*gridLength);
+        double threshold = (double) openedSites/(double) (gridLength*gridLength);
         return threshold;
     }
     
@@ -65,13 +69,13 @@ public class PercolationStats {
         return mean() + 1.96*stddev()/Math.sqrt(trials);
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         // Unit test
 
-        int n = Integer.parseInt(args[0]);
+        int gridLength = Integer.parseInt(args[0]);
         int trials = Integer.parseInt(args[1]);
 
-        PercolationStats statistic = new PercolationStats(n, trials);
+        PercolationStats statistic = new PercolationStats(gridLength, trials);
 
         StdOut.println("mean                    = " + statistic.mean());
         StdOut.println("standard deviation      = " + statistic.stddev());

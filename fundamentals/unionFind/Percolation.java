@@ -22,42 +22,42 @@ public class Percolation {
     // initializes to (N^2)+1;
     private int virtualBottomIndex;
 
-    public Percolation(int N) {
+    public Percolation(int n) {
         /*
         It creates N length of grid and create virtual bottom site 
         and virtual top site.
         */
 
         // throw error if N (a length of grid) is smaller than 1.
-        if (N < 1) {
+        if (n < 1) {
             throw new IllegalArgumentException();
         }
 
-        gridLength = N;
-        int arraySize = N*N+2;
+        gridLength = n;
+        int arraySize = n*n+2;
         isOpen = new boolean[arraySize];
 
         virtualTopIndex = 0;
-        virtualBottomIndex = N*N+1;
+        virtualBottomIndex = n*n+1;
 
         isOpen[virtualTopIndex] = true;
         isOpen[virtualBottomIndex] = true;
 
         percolation = new WeightedQuickUnionUF(arraySize);
-        //isPercolationFull does not have a virtual bottom site.
+        // isPercolationFull does not have a virtual bottom site.
         isPercolationFull = new WeightedQuickUnionUF(arraySize-1);
         
-
-        for (int col = 1; col <= N; col++) {
+        for (int col = 1; col <= n; col++) {
             // connect all top row sites to virtual top site
             int row = 1;
-            int topSiteIndex = getSiteIndex(row,col);
+
+            int topSiteIndex = getSiteIndex(row, col);
             percolation.union(virtualTopIndex, topSiteIndex);
             isPercolationFull.union(virtualTopIndex, topSiteIndex);
 
             // connect all bottom row sites to virtual bottom site
-            row = N;
-            int bottomSiteIndex = getSiteIndex(row,col);
+            row = n;
+            int bottomSiteIndex = getSiteIndex(row, col);
             percolation.union(virtualBottomIndex, bottomSiteIndex);
         } 
     }
@@ -122,7 +122,7 @@ public class Percolation {
         // returns the number of sites that are opened.
         int openedSites = 0;
         for (int i = 0; i < this.isOpen.length; i++) {
-            if (isOpen[i] == true) {
+            if (isOpen[i]) {
                 openedSites++;
             }
         }
@@ -139,16 +139,16 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         // return true if the site is connected to the virtual top site.
         int siteIndex = getSiteIndex(row, col);
-        return(isPercolationFull.connected(virtualTopIndex, siteIndex) && isOpen[siteIndex]);
+        return (isPercolationFull.connected(virtualTopIndex, siteIndex) && isOpen[siteIndex]);
     }
 
     public boolean percolates() {
         // return true if the system percolates.
-        if(gridLength > 1) {
+        if (gridLength > 1) {
             return percolation.connected(virtualTopIndex, virtualBottomIndex);
         }
         else {
-            return isOpen[getSiteIndex(1,1)];
+            return isOpen[getSiteIndex(1, 1)];
         }
     }
 
@@ -157,12 +157,12 @@ public class Percolation {
         // unit test
         Percolation percolation3 = new Percolation(3);
         StdOut.println("Nothing is opened. Percolates? " + percolation3.percolates());
-        percolation3.open(1,1);
+        percolation3.open(1, 1);
         StdOut.println("One site is opened. Percolates?" + percolation3.percolates());
-        percolation3.open(2,1);
-        percolation3.open(3,1);
-        percolation3.open(2,3);
-        percolation3.open(1,3);
+        percolation3.open(2, 1);
+        percolation3.open(3, 1);
+        percolation3.open(2, 3);
+        percolation3.open(1, 3);
         StdOut.println("number of opened sites : " + percolation3.numberOfOpenSites());
         StdOut.println("Does it percolate? : " + percolation3.percolates());       
     }
